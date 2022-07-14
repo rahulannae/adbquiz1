@@ -16,7 +16,7 @@ csv_rows.pop(0)
 
 @app.route('/')
 def hello_world():
-    return '<h1>Rahul Annae - 1001979222</h1>'
+    return render_template('data.html', results=csv_rows)
 
 
 @app.route('/11', methods=['POST', 'GET'])
@@ -25,14 +25,15 @@ def task11():
         print(request.form)
         range_from = int(request.form['range_from'])
         range_to = int(request.form['range_to'])
-        return redirect(url_for('task11results',rangefrom=range_from, rangeto=range_to))
+        return redirect(url_for('task11results', rangefrom=range_from, rangeto=range_to))
     else:
         return render_template('task11.html')
 
 
 @app.route('/11results/<rangefrom>/<rangeto>')
-def task11results(rangefrom,rangeto):
-    filtered = list(filter(lambda item: int(item[1]) <= int(rangeto) and int(item[1]) >= int(rangefrom), csv_rows))
+def task11results(rangefrom, rangeto):
+    filtered = list(filter(lambda item: int(item[1]) <= int(
+        rangeto) and int(item[1]) >= int(rangefrom), csv_rows))
     print('filtered')
     print(filtered)
     return render_template('task11results.html', results=filtered)
@@ -41,6 +42,33 @@ def task11results(rangefrom,rangeto):
 @app.route('/10')
 def task10():
     return render_template('hello.html')
+
+
+@app.route('/12')
+def form12():
+    return render_template('task12.html')
+
+
+@app.route('/12name', methods=['POST'])
+def form12name():
+    name = request.form['name']
+    match = None
+    for row in csv_rows:
+        if row[0] == name:
+            match = row
+    return render_template('task12update.html', match=match)
+
+
+@app.route('/12submit', methods=['POST'])
+def form12submit():
+    name = request.form['name']
+    classname = request.form['class']
+    comments = request.form['comments']
+    for row in csv_rows:
+        if row[0] == name:
+            row[2] = classname
+            row[4] = comments
+    return redirect(url_for('hello_world'))
 
 
 if __name__ == '__main__':
