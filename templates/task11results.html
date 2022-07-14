@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+
+<body>
+   <h1>Rahul Annae - 1001979222</h1>
+   <br>
+   <img width="100px" src="static/m-1.jpg" alt="">
+   <br>
+   <table border="1px">
+      <tr>
+         <th>Name</th>
+         <th>Age</th>
+         <th>Picture</th>
+         <th>Comments</th>
+      </tr>
+      {% for row in results: %}
+         <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td><img width="50px" src="/static/{{row[3]}}" alt="Image does not exist"> </td>
+            <td>{{row[4]}}</td>
+         </tr>
+      {% endfor %}
+   </table>
+</body>
+
+</html>

@@ -6,43 +6,43 @@ UPLOAD_FOLDER = '/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 csv_rows = []
+filtered = []
+with open('static/data-1.csv', 'r') as inFile:
+    reader = csv.reader(inFile)
+    csv_rows = [row for row in reader]
+csv_rows.pop(0)
+# print(csv_rows)
+
 
 @app.route('/')
 def hello_world():
-    return 'Hello Wold'
-@app.route('/hello/<name>')
-def hello_world_name(name):
-    return f'Hello Wold {name}'
-    
+    return '<h1>Rahul Annae - 1001979222</h1>'
 
-@app.route('/cond/<name>')
-def cond(name):
-    if name == 'world':
-        return redirect(url_for('hello_world'))
+
+@app.route('/11', methods=['POST', 'GET'])
+def task11():
+    if request.method == 'POST':
+        print(request.form)
+        range_from = int(request.form['range_from'])
+        range_to = int(request.form['range_to'])
+        return redirect(url_for('task11results',rangefrom=range_from, rangeto=range_to))
     else:
-        return redirect(url_for(f'hello_world_name',name=name))
+        return render_template('task11.html')
 
 
-@app.route('/login',methods = ['POST', 'GET'])
-def login():
-   if request.method == 'POST':
-      user = request.form['nm']
-      return redirect(url_for('success',name = user))
-   else:
-      user = request.args.get('nm')
-      return redirect(url_for('success',name = user))
+@app.route('/11results/<rangefrom>/<rangeto>')
+def task11results(rangefrom,rangeto):
+    filtered = list(filter(lambda item: int(item[1]) <= int(rangeto) and int(item[1]) >= int(rangefrom), csv_rows))
+    print('filtered')
+    print(filtered)
+    return render_template('task11results.html', results=filtered)
 
-@app.route('/success', methods = ['POST'])  
-def success():  
-    if request.method == 'POST':  
-        f = request.files['file']  
-        f.save(f.filename)  
-        return render_template("success.html", name = f.filename)  
 
-@app.route('/showpage')
-def showpage():
+@app.route('/10')
+def task10():
     return render_template('hello.html')
+
+
 if __name__ == '__main__':
     # app.run()
     app.run(debug=True)
-
