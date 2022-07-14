@@ -1,8 +1,11 @@
 from flask import Flask, redirect, render_template, url_for, request
+import csv
 
 app = Flask(__name__)
 UPLOAD_FOLDER = '/static/images'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+csv_rows = []
 
 @app.route('/')
 def hello_world():
